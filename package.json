@@ -1,0 +1,31 @@
+{
+  "name": "plain-tree-compiler",
+  "version": "0.0.1",
+  "description": "A simple grammar used to represent tree, inspired by markdown.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/**/*.js",
+    "cover": "istanbul cover _mocha \"test/**/*.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LoveKino/plain-tree-compiler.git"
+  },
+  "keywords": [
+    "grammar",
+    "tree"
+  ],
+  "author": "ddchen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LoveKino/plain-tree-compiler/issues"
+  },
+  "homepage": "https://github.com/LoveKino/plain-tree-compiler#readme",
+  "devDependencies": {
+    "istanbul": "^0.4.5",
+    "mocha": "^3.5.0"
+  }
+}
