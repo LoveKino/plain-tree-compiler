@@ -9,13 +9,18 @@
  * }
  */
 
-let parse = (str) => {
+const DEFAULT_DELIMITER_SYMBOL = '#';
+
+let parse = (str, {
+    delimiter = DEFAULT_DELIMITER_SYMBOL,
+    maxDepth
+} = {}) => {
     let lines = str.split('\n');
 
     let tokens = [];
     for (let i = 0; i < lines.length; i++) {
         let line = lines[i];
-        tokens.push(parseLine(line));
+        tokens.push(parseLine(line, i, delimiter, maxDepth));
     }
 
     let tree = newNode();
@@ -24,6 +29,7 @@ let parse = (str) => {
     for (let i = 0; i < tokens.length; i++) {
         let {
             wellCount,
+            lineNumber,
             line
         } = tokens[i];
         if (wellCount === 0) {
@@ -41,7 +47,7 @@ let parse = (str) => {
                 // change refer
                 refer = node;
             } else {
-                throw new Error(`Depth can only be increased step by step. Token info: ${wellCount}, ${line}.`);
+                throw new Error(`Depth can only be increased step by step. Token info: line number is ${lineNumber}, line string is ${line}, delimiter length is ${wellCount}.`);
             }
         }
     }
@@ -87,21 +93,31 @@ let addLine = (node, line) => {
     }
 };
 
-let parseLine = (line) => {
+let parseLine = (rawLine, lineNumber, delimiter, maxDepth) => {
     let wellCount = 0;
 
+    let line = rawLine;
+
     let trimedLine = line.trim();
-    if (trimedLine[0] === '#') {
+    if (trimedLine[0] === delimiter) {
         line = trimedLine;
     }
 
-    while (line[0] === '#') {
+    while (line[0] === delimiter) {
         wellCount++;
         line = line.substring(1);
     }
 
+    if (typeof maxDepth === 'number') {
+        if (wellCount > maxDepth) {
+            throw new Error(`The delimiter length is over than the max depth. Delimiter length is ${wellCount}, max depth is ${maxDepth}. Line number is ${lineNumber}, line string is ${rawLine}`);
+        }
+    }
+
     return {
         line,
+        rawLine,
+        lineNumber,
         wellCount
     };
 };

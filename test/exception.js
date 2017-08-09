@@ -14,4 +14,19 @@ describe('exception', () => {
             done();
         }
     });
+
+    it('max depth', (done) => {
+        parse('#1\n##4', {
+            maxDepth: 2
+        });
+
+        try {
+            parse('#1\n##4', {
+                maxDepth: 1
+            });
+        } catch (err) {
+            assert(err.toString().indexOf('The delimiter length is over than the max depth') !== -1);
+            done();
+        }
+    });
 });
